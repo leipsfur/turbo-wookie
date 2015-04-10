@@ -1,0 +1,4 @@
+#!/bin/sh
+pacmd set-default-sink "bluez_sink.00_0C_8A_EC_8E_9D";
+pulseaudio-equalizer enable;
+pacmd set-sink-volume "bluez_sink.00_0C_8A_EC_8E_9D" 0xCD00

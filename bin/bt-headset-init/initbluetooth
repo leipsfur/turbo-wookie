@@ -1,0 +1,6 @@
+#!/bin/bash
+
+bluetooth on
+bluetoothctl << EOF
+power on
+EOF

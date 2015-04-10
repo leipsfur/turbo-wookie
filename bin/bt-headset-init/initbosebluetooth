@@ -1,0 +1,17 @@
+#!/bin/bash
+initbluetooth
+
+while true
+do
+	sleep 0.2
+	t=$(bluetoothctl <<e       
+info 00:0C:8A:EC:8E:9D
+e
+)
+	if [[ $t == *"Connected: yes"* ]]
+	then
+		sleep 0.5
+		bosebluetooth
+		break
+	fi
+done
