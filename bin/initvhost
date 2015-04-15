@@ -1,0 +1,61 @@
+#!/bin/sh
+
+
+templateVhost="NameVirtualHost {host}:80
+
+<VirtualHost {host}:80>
+    DocumentRoot {path}
+    ServerName {host}
+    ErrorLog logs/{host}-error_log
+    CustomLog logs/{host}-access_log common
+</VirtualHost>"
+
+templateHosts="127.0.0.1		{host}"
+
+if [ -z ${1+x} ];
+then 
+	echo "No hostname specified";
+	exit;
+fi;
+
+host=$1;
+path="";
+if [ -z ${2+x} ]; 
+then
+	echo "Path not set";
+	path=$(pwd);
+	echo "Using" $path;
+else
+	path={$2};
+fi;
+
+echo "Creating host:" $host;
+
+vhost=$templateVhost;
+vhost=${vhost//"{path}"/$path};
+vhost=${vhost//"{host}"/$host};
+
+hosts=$templateHosts;
+hosts=${hosts//"{host}"/$host}
+
+echo "Preview vhost.conf:"
+echo "------------------";
+echo "$vhost";
+echo "------------------";
+echo "Preview hosts entry:"
+echo "------------------";
+echo "$hosts";
+echo "------------------";
+
+read -p "Are you sure? [Y/n]: " -n 1 -r
+echo
+if [[ $REPLY =~ ^[YyJj]$ ]];
+then
+	touch "/etc/httpd/vhosts.custom/$host.conf";
+	echo "$vhost" >> "/etc/httpd/vhosts.custom/$host.conf";
+	echo $'\n'"$hosts" >> "/etc/hosts";
+	echo "Done";
+else
+	echo "Aborted";
+	exit;
+fi;
