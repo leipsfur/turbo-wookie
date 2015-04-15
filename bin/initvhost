@@ -52,8 +52,9 @@ echo
 if [[ $REPLY =~ ^[YyJj]$ ]];
 then
 	sudo touch "/etc/httpd/vhosts.custom/$host.conf";
-	sudo echo "$vhost" >> "/etc/httpd/vhosts.custom/$host.conf";
-	sudo echo $'\n'"$hosts" >> "/etc/hosts";
+	sudo bash -c "echo \"$vhost\" >> \"/etc/httpd/vhosts.custom/$host.conf\";"
+	sudo bash -c "echo $'\n'\"$hosts\" >> \"/etc/hosts\";"
+	sudo systemctl restart httpd;
 	echo "Done";
 else
 	echo "Aborted";
