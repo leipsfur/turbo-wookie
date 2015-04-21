@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cp -R ./bin/* ~/.bin/;
+cp -Ri ./bin/* ~/.bin/;
